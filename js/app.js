@@ -69,6 +69,35 @@ const row = document.createElement('tr');
 
     // Add into the shopping cart
     shoppingCartContent.appendChild(row);
+
+    // Add course into Storage
+    saveIntoStorage(course);
+}
+
+// Add courses into local Storage
+
+function saveIntoStorage(course) {
+    let courses = getCoursesFromStorage();
+
+    // add course to array
+    courses.push(course);
+
+    // Strorage only saves strings 
+    localStorage.setItem('courses', JSON.stringify(courses));
+}
+
+// Get contents from storage
+
+function getCoursesFromStorage() {
+    let courses;
+
+    // if something exists then we get the value otherwise it creates empty array
+    if (localStorage.getItem('courses') === null){
+        courses = [];
+    } else {
+        courses = JSON.parse(localStorage.getItem('courses'));
+    }
+    return courses;
 }
 
 //remove course from DOM
