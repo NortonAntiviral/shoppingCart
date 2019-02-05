@@ -104,10 +104,36 @@ function getCoursesFromStorage() {
 }
 
 //remove course from DOM
-function removeCourse(e){
+function removeCourse(e) {
+    let course,courseId;
+
+    //removes from the DOM
    if( e.target.classList.contains('remove')) {
        e.target.parentElement.parentElement.remove();
+       course = e.target.parentElement.parentElement;
+       courseId = course.querySelector('a').getAttribute('data-id');
    }
+   console.log(course);
+
+   // remove from local storage
+   removeCourseLocalStorage(courseId);
+   
+}
+
+// remove from loca storage
+function removeCourseLocalStorage(id) {
+    //get data from local storage
+    let coursesLS = getCoursesFromStorage();
+
+    // loop throughout the array to find the index to remove
+    coursesLS.forEach(function(courseLS,index) {
+        if (courseLS.id === id) {
+            courseLS.splice(index,1);
+        }
+    });
+
+    // Add the remaining array
+    localStorage.setItem('courses', JSON.stringify(coursesLS));
 }
 
 
@@ -119,10 +145,18 @@ function clearCart() {
     while(shoppingCartContent.firstChild) {
       shoppingCartContent.removeChild(shoppingCartContent.firstChild);
     }
+
+    //Clear from LS
+    clearLocalStorage();
+}
+
+// Clears local storage
+function clearLocalStorage() {
+    localStorage.clear();
 }
 
 // Loads when document is read and print courses into shopping cart
-function getFromLocalStorage(){
+function getFromLocalStorage() {
     let coursesLS = getCoursesFromStorage();
 
     // Loop throughout the courses and prints into cart
